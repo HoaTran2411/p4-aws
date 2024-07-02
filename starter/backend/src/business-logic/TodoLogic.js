@@ -5,7 +5,7 @@ import {
     updateTodoAccess,
     updateTodoAttachmentUrlAccess
 } from "../data-layer/TodoAccess.js"
-import {pushImgToS3} from "../file-storage/AttachmentUtils.js"
+import {pushImgToS3} from "../storage-img/imageS3.js"
 import {getUserId} from "../auth/UserUtils.mjs";
 import {v4 as uuidv4} from "uuid";
 import dateFormat from 'dateformat';
