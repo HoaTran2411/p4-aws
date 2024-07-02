@@ -55,8 +55,8 @@ functions:
     handler: src/lambda/auth/Auth0Authorizer.handler
 
   # TODO: Configure this function
-  GetTodos:
-    handler: src/lambda/http/GetTodos.handler
+  TodosGet:
+    handler: src/lambda/http/todosGet.handler
     events:
       - http:
           authorizer: Auth
@@ -74,8 +74,8 @@ functions:
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
   # TODO: Configure this function
-  CreateTodo:
-    handler: src/lambda/http/CreateTodo.handler
+  TodoCreate:
+    handler: src/lambda/http/todoCreate.handler
     events:
       - http:
           authorizer: Auth
@@ -92,8 +92,8 @@ functions:
         Resource: !GetAtt TodosTable.Arn
 
   # TODO: Configure this function
-  UpdateTodo:
-    handler: src/lambda/http/UpdateTodo.handler
+  TodoUpdate:
+    handler: src/lambda/http/todoUpdate.handler
     events:
       - http:
           authorizer: Auth
@@ -110,8 +110,8 @@ functions:
         Resource: !GetAtt TodosTable.Arn
 
   # TODO: Configure this function
-  DeleteTodo:
-    handler: src/lambda/http/DeleteTodo.handler
+  TodoDelete:
+    handler: src/lambda/http/todoDelete.handler
     events:
       - http:
           authorizer: Auth
@@ -125,8 +125,8 @@ functions:
         Resource: !GetAtt TodosTable.Arn
 
   # TODO: Configure this function
-  GenerateUploadUrl:
-    handler: src/lambda/http/GenerateUploadUrl.handler
+  TodoGenerateUrl:
+    handler: src/lambda/http/todoGenerateUrl.handler
     events:
       - http:
           authorizer: Auth
