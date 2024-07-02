@@ -1,16 +1,16 @@
-import {getSignedUrl} from '@aws-sdk/s3-request-presigner'
 import {PutObjectCommand, S3Client} from '@aws-sdk/client-s3'
+import {getSignedUrl} from '@aws-sdk/s3-request-presigner'
 
-const attachmentsS3Bucket = process.env.TODO_ATTACHMENTS_S3_BUCKET
-const urlExpiration = parseInt(process.env.SIGNED_URL_EXPIRATION)
-const s3Client = new S3Client();
+const s3ClientObj = new S3Client();
+const atcS3 = process.env.TODO_ATTACHMENTS_S3_BUCKET
+const urlExp = parseInt(process.env.SIGNED_URL_EXPIRATION)
 
-export async function addAttachmentToS3(imageId) {
+export async function addAttachmentToS3(imgId) {
     const command = new PutObjectCommand({
-        Bucket: attachmentsS3Bucket,
-        Key: imageId
+        Bucket: atcS3,
+        Key: imgId
     })
-    return await getSignedUrl(s3Client, command, {
-        expiresIn: urlExpiration
+    return await getSignedUrl(s3ClientObj, command, {
+        expiresIn: urlExp
     })
 }
