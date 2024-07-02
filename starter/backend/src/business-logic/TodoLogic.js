@@ -5,7 +5,7 @@ import {
     updateTodoAccess,
     updateTodoAttachmentUrlAccess
 } from "../data-layer/TodoAccess.js"
-import {addAttachmentToS3} from "../file-storage/AttachmentUtils.js"
+import {pushImgToS3} from "../file-storage/AttachmentUtils.js"
 import {getUserId} from "../auth/UserUtils.mjs";
 import {v4 as uuidv4} from "uuid";
 import dateFormat from 'dateformat';
@@ -39,7 +39,7 @@ export async function addAttachMentLogic(event) {
     const todoId = event.pathParameters.todoId
     const imageId = uuidv4();
 
-    const url = await addAttachmentToS3(imageId);
+    const url = await pushImgToS3(imageId);
     await updateTodoAttachmentUrlAccess(userId, todoId, imageId);
 
     return url;
