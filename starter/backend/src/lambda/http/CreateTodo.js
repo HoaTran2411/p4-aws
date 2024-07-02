@@ -7,23 +7,23 @@ import {createTodoLogic} from '../../business-logic/TodoLogic.js'
 const log = createLogger('Event: Create todo')
 
 export const handler = middy()
-  .use(httpErrorHandler())
-  .use(
-    cors({
-        credentials: true
+    .use(httpErrorHandler())
+    .use(
+        cors({
+            credentials: true
+        })
+    )
+    .handler(async (ev) => {
+        console.log('Event: ', ev)
+        const taskTodo = await createTodoLogic(ev);
+        log.info('Created success', {
+            todo: taskTodo
+        })
+        return {
+            statusCode: 201,
+            body: JSON.stringify({
+                item: taskTodo
+            })
+        }
     })
-  )
-  .handler(async (ev) => {
-      console.log('Event: ', ev)
-      const taskTodo = await createTodoLogic(ev);
-      log.info('Created success', {
-          todo: taskTodo
-      })
-      return {
-          statusCode: 201,
-          body: JSON.stringify({
-              item: taskTodo
-          })
-      }
-  })
 

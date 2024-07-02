@@ -1,24 +1,27 @@
-import middy from '@middy/core'
 import cors from '@middy/http-cors'
+import middy from '@middy/core'
+import {createLogger} from '../../logger/LoggerUtils.mjs'
 import httpErrorHandler from '@middy/http-error-handler'
 import {getTodoLogic} from '../../business-logic/TodoLogic.js'
 
+const log = createLogger('Event: Get todos')
+
 export const handler = middy()
-  .use(httpErrorHandler())
-  .use(
-    cors({
-        credentials: true
+    .use(httpErrorHandler())
+    .use(
+        cors({
+            credentials: true
+        })
+    )
+    .handler(async (ev) => {
+        console.log('Event: ', ev)
+
+        const todoList = await getTodoLogic(ev);
+        log.info('Generated url successfully!', todoList)
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                items: todoList
+            })
+        }
     })
-  )
-  .handler(async (event) => {
-      console.log('Processing event: ', event)
-
-      const todos = await getTodoLogic(event);
-
-      return {
-          statusCode: 200,
-          body: JSON.stringify({
-              items: todos
-          })
-      }
-  })
