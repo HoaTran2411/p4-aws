@@ -1,10 +1,10 @@
 import cors from "@middy/http-cors";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
-import {createLogger} from '../../logger/LoggerUtils.mjs'
-import {addAttachMentLogic} from "../../business-logic/TodoLogic.js";
+import { createLogInfo } from '../../log-info/LogUtils.mjs'
+import { addAttachMentLogic } from "../../business-logic/TodoLogic.js";
 
-const log = createLogger('Event: Generate URL')
+const log = createLogInfo('Event: Generate URL')
 
 export const handler = middy()
     .use(httpErrorHandler())

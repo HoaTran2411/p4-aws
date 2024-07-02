@@ -1,10 +1,10 @@
 import cors from "@middy/http-cors";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
-import {createLogger} from '../../logger/LoggerUtils.mjs'
-import {deleteTodoLogic} from "../../business-logic/TodoLogic.js";
+import { createLogInfo } from '../../log-info/LogUtils.mjs'
+import { deleteTodoLogic } from "../../business-logic/TodoLogic.js";
 
-const log = createLogger('Event: Delete todo!')
+const log = createLogInfo('Event: Delete todo!')
 
 export const handler = middy()
     .use(httpErrorHandler())

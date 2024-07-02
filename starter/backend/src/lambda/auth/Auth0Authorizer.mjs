@@ -1,8 +1,8 @@
 import jsonwebtoken from 'jsonwebtoken'
-import {createLogger} from '../../logger/LoggerUtils.mjs'
+import {createLogInfo} from '../../log-info/LogUtils.mjs'
 
 // const jwksUrl = 'https://${domain}/.well-known/jwks.json'
-const logger = createLogger('auth')
+const logger = createLogInfo('auth')
 const certificate = process.env.AUTH0_CERTIFICATE;
 
 export async function handler(event) {
