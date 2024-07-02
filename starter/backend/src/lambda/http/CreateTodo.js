@@ -1,11 +1,10 @@
-import middy from '@middy/core'
 import cors from '@middy/http-cors'
-import httpErrorHandler from '@middy/http-error-handler'
+import middy from '@middy/core'
 import {createLogger} from '../../logger/LoggerUtils.mjs'
+import httpErrorHandler from '@middy/http-error-handler'
 import {createTodoLogic} from '../../business-logic/TodoLogic.js'
 
-const logger = createLogger('create-todo')
-const todosTable = process.env.TODOS_TABLE
+const log = createLogger('Event: Create todo')
 
 export const handler = middy()
   .use(httpErrorHandler())
@@ -14,19 +13,16 @@ export const handler = middy()
         credentials: true
     })
   )
-  .handler(async (event) => {
-      console.log('Processing event: ', event)
-
-      const todo = await createTodoLogic(event);
-
-      logger.info('Todo created', {
-          todo: todo
+  .handler(async (ev) => {
+      console.log('Event: ', ev)
+      const taskTodo = await createTodoLogic(ev);
+      log.info('Created success', {
+          todo: taskTodo
       })
-
       return {
           statusCode: 201,
           body: JSON.stringify({
-              item: todo
+              item: taskTodo
           })
       }
   })
