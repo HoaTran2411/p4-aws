@@ -2,7 +2,7 @@ import cors from "@middy/http-cors";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { createLogInfo } from '../../log-info/LogUtils.mjs'
-import { updateTodoLogic } from "../../business-logic/TodoLogic.js";
+import { updateTodoLogic } from "../../business-logic/todosLogic.js";
 
 const log = createLogInfo('Event: update todo task!')
 

@@ -2,7 +2,7 @@ import cors from "@middy/http-cors";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { createLogInfo } from '../../log-info/LogUtils.mjs'
-import { addAttachMentLogic } from "../../business-logic/TodoLogic.js";
+import { addAttachMentLogic } from "../../business-logic/todosLogic.js";
 
 const log = createLogInfo('Event: Generate URL')
 
