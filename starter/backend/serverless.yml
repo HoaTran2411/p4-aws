@@ -15,6 +15,16 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+          Resource:
+            - "*"  
+
   environment:
     TODOS_TABLE: 01-Todo-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
@@ -40,21 +50,10 @@ cKwraXrUE2e5x89dlJ/5Qs7NEpzkOwRXeuCtZWyc8d0ReiQ+nkcdsbkKeBpUph0C
 mZK/ROxomOZqWoP+MU6hMv5wUwPfWm+4bLjMpfdzCvbw
 -----END CERTIFICATE-----'
 
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-          Resource:
-            - "*"
-
 functions:
   Auth:
     handler: src/lambda/auth/Auth0Authorizer.handler
 
-  # TODO: Configure this function
   TodosGet:
     handler: src/lambda/http/todosGet.handler
     events:
@@ -73,7 +72,6 @@ functions:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_CREATED_AT_INDEX}
 
-  # TODO: Configure this function
   TodoCreate:
     handler: src/lambda/http/todoCreate.handler
     events:
@@ -91,7 +89,20 @@ functions:
           - dynamodb:PutItem
         Resource: !GetAtt TodosTable.Arn
 
-  # TODO: Configure this function
+  TodoDelete:
+    handler: src/lambda/http/todoDelete.handler
+    events:
+      - http:
+          authorizer: Auth
+          method: delete
+          path: todos/{todoId}
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: !GetAtt TodosTable.Arn
+
   TodoUpdate:
     handler: src/lambda/http/todoUpdate.handler
     events:
@@ -109,22 +120,6 @@ functions:
           - dynamodb:UpdateItem
         Resource: !GetAtt TodosTable.Arn
 
-  # TODO: Configure this function
-  TodoDelete:
-    handler: src/lambda/http/todoDelete.handler
-    events:
-      - http:
-          authorizer: Auth
-          method: delete
-          path: todos/{todoId}
-          cors: true
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:DeleteItem
-        Resource: !GetAtt TodosTable.Arn
-
-  # TODO: Configure this function
   TodoGenerateUrl:
     handler: src/lambda/http/todoGenerateUrl.handler
     events:
@@ -144,7 +139,6 @@ functions:
         Resource: arn:aws:s3:::${self:provider.environment.TODO_ATTACHMENTS_S3_BUCKET}/*
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
@@ -180,7 +174,7 @@ resources:
               - AttributeName: createdAt
                 KeyType: RANGE
             Projection:
-              ProjectionType: ALL # What attributes will be copied to an index
+              ProjectionType: ALL 
 
     AttachmentsBucket:
       Type: AWS::S3::Bucket
